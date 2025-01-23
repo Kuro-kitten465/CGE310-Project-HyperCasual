@@ -3,10 +3,12 @@ using UnityEngine;
 public class KnifeController : MonoBehaviour
 {
     private float throwSpeed = 10f;
+    private GameLogicManager gameLogicManager;
 
-    public void Initialize(float throwSpeed)
+    public void Initialize(float throwSpeed, GameLogicManager gameLogicManager)
     {
         this.throwSpeed = throwSpeed;
+        this.gameLogicManager = gameLogicManager;
     }
 
     public void Throw()
@@ -18,11 +20,11 @@ public class KnifeController : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Target"))
         {
-            GameManager.Instance.OnKnifeHitTarget(this, collider);
+            gameLogicManager.OnKnifeHitTarget(this, collider);
         }
         else
         {
-            GameManager.Instance.OnKnifeHitFailure(this);
+            gameLogicManager.OnKnifeHitFailure(this);
         }
     }
 }
