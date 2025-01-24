@@ -7,11 +7,16 @@ public class GameManager : MonoSingleton<GameManager>
     public int HighestScore
     {
         get => highestScore;
-        set
-        {
-            highestScore = value;
-        }
+        set => highestScore = value;
     }
+
+    private int apple = 0;
+    public int Apple
+    {
+        get => apple;
+        set => apple = value;
+    }
+
 
     protected override void Awake()
     {
@@ -22,17 +27,14 @@ public class GameManager : MonoSingleton<GameManager>
     public void SaveData()
     {
         PlayerPrefs.SetInt("HighestScore", highestScore);
+        PlayerPrefs.SetInt("Apple", apple);
         Debug.Log("Data saved!");
     }
 
     public void LoadSavedData()
     {
         highestScore = PlayerPrefs.GetInt("HighestScore", 0);
+        apple = PlayerPrefs.GetInt("Apple", 0);
         Debug.Log("Data loaded!");
-    }
-
-    private void OnGUI()
-    {
-        GUILayout.Label("Highest Score: " + highestScore);
     }
 }

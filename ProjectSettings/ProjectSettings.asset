@@ -139,7 +139,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 0.1.1b
+  bundleVersion: 0.2.1pre-release
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -730,11 +730,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: CGE310-HyperCasual
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: Hiniature
+  metroCertificateIssuer: Hiniature
+  metroCertificateNotAfter: 80f39ae7898ddc01
   metroApplicationDescription: CGE310-HyperCasual
   wsaImages: {}
   metroTileShortName: CGE310-HyperCasual
