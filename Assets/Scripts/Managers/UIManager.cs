@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject tapText;
     [SerializeField] private TMP_Text scoreGameOverPanel;
     [SerializeField] private TMP_Text scorePanel;
 

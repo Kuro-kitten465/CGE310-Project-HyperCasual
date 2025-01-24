@@ -22,10 +22,17 @@ public class GameManager : MonoSingleton<GameManager>
     public void SaveData()
     {
         PlayerPrefs.SetInt("HighestScore", highestScore);
+        Debug.Log("Data saved!");
     }
 
     public void LoadSavedData()
     {
         highestScore = PlayerPrefs.GetInt("HighestScore", 0);
+        Debug.Log("Data loaded!");
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Label("Highest Score: " + highestScore);
     }
 }

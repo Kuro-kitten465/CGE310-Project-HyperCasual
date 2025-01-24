@@ -71,27 +71,39 @@ public class GameLogicManager : MonoBehaviour
         }
     }*/
 
-    [Header("Game Properties")]
+    [Header("Game Configuration")]
     [SerializeField] private float knifeSpeed = 10f;
     [SerializeField] private int maxKnifeCount = 10;
     [SerializeField] private float targetRotationSpeed = 100f;
     public float TargetRotationSpeed => targetRotationSpeed;
+    [SerializeField] private float knifeStuckPosition = 0.65f;
 
-    [Header("Config")]
+    [Header("Audio")]
+    [SerializeField] private AudioSource targetHitSource;
+    [SerializeField] private AudioSource knifeThrowSource;
+    [SerializeField] private AudioSource knifeHitSource;
+    public AudioSource tapSource;
+
+    [Header("Properties")]
     [SerializeField] private UIManager uiManager;
     [SerializeField] private GameObject knifePrefab;
     [SerializeField] private Transform knifeSpawnPoint;
     [SerializeField] private TargetController target;
-    [SerializeField] private float knifeStuckPosition = 0.65f;
 
     private readonly Queue<KnifeController> knives = new();
     private int knifeIndex = 0;
 
     private bool isGameOver = false;
+    private bool isGameStarted = false;
     private int currentScore = 0;
 
     // Expose properties for external use (optional)
     public bool IsGameOver => isGameOver;
+    public bool IsGameStarted
+    {
+        get => isGameStarted;
+        set => isGameStarted = value;
+    }
     public int CurrentScore => currentScore;
 
     private void Start()
@@ -104,6 +116,7 @@ public class GameLogicManager : MonoBehaviour
         isGameOver = false;
         currentScore = 0;
         knifeIndex = 0;
+        isGameStarted = false;
     }
 
     public KnifeController SpawnKnife()
@@ -112,6 +125,7 @@ public class GameLogicManager : MonoBehaviour
         obj.name = $"Knife {knifeIndex}";
         var knife = obj.GetComponent<KnifeController>();
         knife.Initialize(knifeSpeed, this);
+        knifeThrowSource.Play();
         knives.Enqueue(knife);
         knifeIndex++;
         return knife;
@@ -126,7 +140,8 @@ public class GameLogicManager : MonoBehaviour
         knife.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         knife.transform.position = new Vector2(0, knifeStuckPosition);
 
-        currentScore++;
+        targetHitSource.Play();
+
         CheckLevelProgress();
         uiManager.UpdateScore(currentScore);
     }
@@ -135,16 +150,23 @@ public class GameLogicManager : MonoBehaviour
     {
         isGameOver = true;
 
+        knifeHitSource.Play();
+
         uiManager.ShowGameOver(currentScore);
 
         if (GameManager.Instance != null)
-            GameManager.Instance.HighestScore = currentScore;
+            if (currentScore > GameManager.Instance.HighestScore)
+            {
+                GameManager.Instance.HighestScore = currentScore;
+                GameManager.Instance.SaveData();
+            }
     }
 
     private void CheckLevelProgress()
     {
         if (isGameOver) return;
 
+        currentScore++;
         if (knifeIndex >= maxKnifeCount)
         {
             var oldKnife = knives.Dequeue();

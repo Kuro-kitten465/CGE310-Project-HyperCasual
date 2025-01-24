@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class MainMenuController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject shopMenu;
+
+    public void StartGame()
     {
-        
+        SceneManagement.LoadScene("Gameplay");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShopMenu()
     {
-        
+        shopMenu.SetActive(true);
     }
 }
